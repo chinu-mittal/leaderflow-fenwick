@@ -3,6 +3,7 @@ import { FenwickTree } from "@/lib/fenwickTree";
 import { Player, PlayerData } from "@/types/player";
 import LeaderboardHeader from "@/components/LeaderboardHeader";
 import ActionButtons from "@/components/ActionButtons";
+import AddPlayerForm from "@/components/AddPlayerForm";
 import SearchBar from "@/components/SearchBar";
 import LeaderboardTable from "@/components/LeaderboardTable";
 import ScoreChart from "@/components/ScoreChart";
@@ -55,6 +56,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <LeaderboardHeader />
       <ActionButtons onUpdateScore={updateScore} />
+      <AddPlayerForm onAddPlayer={updateScore} />
       <SearchBar value={searchQuery} onChange={setSearchQuery} />
       <LeaderboardTable 
         players={leaderboard} 
