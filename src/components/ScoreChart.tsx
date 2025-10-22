@@ -13,25 +13,45 @@ const ScoreChart = ({ players }: ScoreChartProps) => {
   }));
 
   return (
-    <div className="max-w-4xl mx-auto px-4 my-8">
-      <Card className="p-6 shadow-xl">
-        <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
-          <span>📊</span>
+    <div className="max-w-4xl mx-auto px-4 my-8 mb-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+      <Card className="p-8 shadow-2xl border-2 border-primary/10 bg-gradient-subtle">
+        <h3 className="text-3xl font-bold mb-8 flex items-center gap-3">
+          <span className="text-4xl">📊</span>
           Score Distribution
         </h3>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={350}>
           <BarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-            <XAxis dataKey="name" />
-            <YAxis />
+            <defs>
+              <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity={1} />
+                <stop offset="100%" stopColor="hsl(var(--primary-glow))" stopOpacity={0.8} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" opacity={0.2} stroke="hsl(var(--border))" />
+            <XAxis 
+              dataKey="name" 
+              tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
+              tickLine={{ stroke: 'hsl(var(--border))' }}
+            />
+            <YAxis 
+              tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
+              tickLine={{ stroke: 'hsl(var(--border))' }}
+            />
             <Tooltip
               contentStyle={{
                 backgroundColor: "hsl(var(--card))",
-                border: "1px solid hsl(var(--border))",
+                border: "2px solid hsl(var(--primary))",
                 borderRadius: "var(--radius)",
+                boxShadow: "var(--shadow-lg)",
               }}
+              cursor={{ fill: 'hsl(var(--accent))' }}
             />
-            <Bar dataKey="score" fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} />
+            <Bar 
+              dataKey="score" 
+              fill="url(#colorScore)" 
+              radius={[12, 12, 0, 0]}
+              animationDuration={1000}
+            />
           </BarChart>
         </ResponsiveContainer>
       </Card>

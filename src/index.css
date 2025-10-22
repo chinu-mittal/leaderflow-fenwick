@@ -39,7 +39,17 @@ All colors MUST be HSL.
     --radius: 0.625rem;
     
     --primary-hover: 229 69% 51%;
+    --primary-glow: 229 100% 75%;
     --highlight: 229 100% 94%;
+    
+    --gradient-primary: linear-gradient(135deg, hsl(229 90% 61%), hsl(229 100% 75%));
+    --gradient-hero: linear-gradient(135deg, hsl(229 90% 61%) 0%, hsl(269 90% 61%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(229 100% 98%), hsl(229 100% 96%));
+    
+    --shadow-sm: 0 2px 8px -2px hsl(229 90% 61% / 0.1);
+    --shadow-md: 0 4px 16px -4px hsl(229 90% 61% / 0.15);
+    --shadow-lg: 0 8px 24px -6px hsl(229 90% 61% / 0.2);
+    --shadow-glow: 0 0 40px hsl(229 100% 75% / 0.3);
     
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -90,7 +100,17 @@ All colors MUST be HSL.
     --ring: 229 90% 61%;
     
     --primary-hover: 229 69% 51%;
+    --primary-glow: 229 100% 75%;
     --highlight: 229 50% 20%;
+    
+    --gradient-primary: linear-gradient(135deg, hsl(229 90% 61%), hsl(229 100% 75%));
+    --gradient-hero: linear-gradient(135deg, hsl(229 90% 61%) 0%, hsl(269 90% 61%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(229 50% 8%), hsl(229 40% 10%));
+    
+    --shadow-sm: 0 2px 8px -2px hsl(229 90% 61% / 0.2);
+    --shadow-md: 0 4px 16px -4px hsl(229 90% 61% / 0.25);
+    --shadow-lg: 0 8px 24px -6px hsl(229 90% 61% / 0.3);
+    --shadow-glow: 0 0 40px hsl(229 100% 75% / 0.4);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -109,5 +129,48 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(var(--primary-glow) / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px hsl(var(--primary-glow) / 0.5);
+    }
+  }
+  
+  .animate-fade-in-up {
+    animation: fade-in-up 0.5s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scale-in 0.3s ease-out;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
   }
 }
