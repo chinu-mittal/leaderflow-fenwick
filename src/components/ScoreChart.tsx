@@ -14,9 +14,9 @@ const ScoreChart = ({ players }: ScoreChartProps) => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 my-8 mb-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-      <Card className="p-8 shadow-2xl border-2 border-primary/10 bg-gradient-subtle">
-        <h3 className="text-3xl font-bold mb-8 flex items-center gap-3">
-          <span className="text-4xl">📊</span>
+      <Card className="p-8 shadow-xl border-2 border-primary/20 glass-effect">
+        <h3 className="text-3xl font-bold mb-8 flex items-center gap-3 font-display">
+          <span className="text-4xl animate-float">📊</span>
           Score Distribution
         </h3>
         <ResponsiveContainer width="100%" height={350}>
@@ -49,11 +49,11 @@ const ScoreChart = ({ players }: ScoreChartProps) => {
               type="monotone"
               dataKey="score" 
               stroke="hsl(var(--primary))" 
-              strokeWidth={3}
-              dot={{ fill: "hsl(var(--primary))", r: 6 }}
-              activeDot={{ r: 8, fill: "hsl(var(--primary-glow))" }}
+              strokeWidth={4}
+              dot={{ fill: "hsl(var(--primary))", r: 6, strokeWidth: 2, stroke: "hsl(var(--background))" }}
+              activeDot={{ r: 9, fill: "hsl(var(--primary-glow))", strokeWidth: 3, stroke: "hsl(var(--primary))" }}
               fill="url(#colorScore)"
-              animationDuration={1000}
+              animationDuration={1200}
             />
           </LineChart>
         </ResponsiveContainer>

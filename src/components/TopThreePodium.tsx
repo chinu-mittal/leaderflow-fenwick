@@ -39,10 +39,10 @@ const TopThreePodium = ({ players }: TopThreePodiumProps) => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 my-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-      <Card className="p-6 shadow-xl border-2 border-primary/10 bg-gradient-subtle">
+      <Card className="p-6 shadow-xl border-2 border-primary/10 bg-gradient-subtle backdrop-blur-sm">
         <h3 className="text-xl font-bold mb-6 text-center flex items-center justify-center gap-2">
-          <span className="text-2xl">🏆</span>
-          Top 3 Champions
+          <span className="text-2xl animate-float">🏆</span>
+          <span className="font-display">Top 3 Champions</span>
         </h3>
         <div className="flex items-end justify-center gap-3 min-h-[180px]">
           {orderedPlayers.map((player) => (
@@ -55,14 +55,14 @@ const TopThreePodium = ({ players }: TopThreePodiumProps) => {
                 {getPodiumIcon(player.rank)}
               </div>
               <div className="text-center mb-2 min-w-[100px]">
-                <div className="font-bold text-sm truncate px-2">{player.name}</div>
-                <div className="text-xl font-black text-primary">{player.score}</div>
+                <div className="font-bold text-sm truncate px-2 font-display">{player.name}</div>
+                <div className="text-xl font-black text-primary font-display">{player.score}</div>
                 <div className="text-xs text-muted-foreground">points</div>
               </div>
               <div
-                className={`w-24 ${getPodiumHeight(player.rank)} bg-gradient-to-br ${getPodiumColor(player.rank)} border-2 rounded-t-xl flex items-center justify-center transition-all hover:scale-105`}
+                className={`w-24 ${getPodiumHeight(player.rank)} bg-gradient-to-br ${getPodiumColor(player.rank)} border-2 rounded-t-xl flex items-center justify-center transition-all hover:scale-105 shadow-lg`}
               >
-                <div className="text-3xl font-black opacity-30">#{player.rank}</div>
+                <div className="text-3xl font-black opacity-30 font-display">#{player.rank}</div>
               </div>
             </div>
           ))}

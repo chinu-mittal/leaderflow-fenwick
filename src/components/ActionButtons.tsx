@@ -13,13 +13,14 @@ const ActionButtons = ({ onUpdateScore }: ActionButtonsProps) => {
   ];
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-3 my-8 px-4 animate-scale-in">
+    <div className="flex flex-wrap items-center justify-center gap-4 my-8 px-4 animate-scale-in">
       {actions.map((action, index) => (
         <Button
           key={index}
           onClick={() => onUpdateScore(action.name, action.score)}
-          className="transition-all duration-300 hover:scale-110 hover:shadow-glow bg-gradient-primary border-0 font-semibold"
+          className="transition-all duration-300 hover:scale-110 hover:shadow-xl bg-gradient-primary border-0 font-semibold font-display shadow-md"
           style={{ animationDelay: `${index * 0.1}s` }}
+          size="lg"
         >
           {action.label}
         </Button>

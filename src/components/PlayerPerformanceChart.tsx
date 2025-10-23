@@ -17,19 +17,21 @@ const PlayerPerformanceChart = ({ playerName, history, onClose }: PlayerPerforma
   }));
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" onClick={onClose}>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in" onClick={onClose}>
       <Card 
-        className="w-full max-w-3xl p-8 shadow-2xl border-2 border-primary/20 bg-card animate-scale-in"
+        className="w-full max-w-3xl p-8 shadow-2xl border-2 border-primary/30 glass-effect animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-bold flex items-center gap-3">
-            <span className="text-3xl">📈</span>
-            {playerName}'s Performance
+          <h3 className="text-2xl font-bold flex items-center gap-3 font-display">
+            <span className="text-3xl animate-float">📈</span>
+            <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+              {playerName}'s Performance
+            </span>
           </h3>
           <button
             onClick={onClose}
-            className="text-muted-foreground hover:text-foreground transition-colors text-2xl"
+            className="text-muted-foreground hover:text-foreground transition-all text-3xl hover:rotate-90 duration-300"
           >
             ×
           </button>
@@ -85,20 +87,20 @@ const PlayerPerformanceChart = ({ playerName, history, onClose }: PlayerPerforma
           </div>
         )}
         
-        <div className="mt-6 p-4 bg-accent/20 rounded-lg">
-          <div className="flex justify-between text-sm">
-            <div>
-              <span className="text-muted-foreground">Total Updates:</span>
-              <span className="ml-2 font-bold">{history.length}</span>
+        <div className="mt-6 p-5 bg-gradient-to-br from-primary/10 to-primary-glow/10 rounded-xl border border-primary/20">
+          <div className="flex justify-between text-sm flex-wrap gap-4">
+            <div className="flex flex-col">
+              <span className="text-muted-foreground text-xs">Total Updates</span>
+              <span className="font-bold text-lg font-display text-primary">{history.length}</span>
             </div>
-            <div>
-              <span className="text-muted-foreground">Current Score:</span>
-              <span className="ml-2 font-bold text-primary">{history[history.length - 1]?.score}</span>
+            <div className="flex flex-col">
+              <span className="text-muted-foreground text-xs">Current Score</span>
+              <span className="font-bold text-lg font-display text-primary">{history[history.length - 1]?.score}</span>
             </div>
             {history.length > 1 && (
-              <div>
-                <span className="text-muted-foreground">Change:</span>
-                <span className={`ml-2 font-bold ${
+              <div className="flex flex-col">
+                <span className="text-muted-foreground text-xs">Total Change</span>
+                <span className={`font-bold text-lg font-display ${
                   history[history.length - 1].score > history[0].score ? "text-green-500" : "text-red-500"
                 }`}>
                   {history[history.length - 1].score > history[0].score ? "+" : ""}

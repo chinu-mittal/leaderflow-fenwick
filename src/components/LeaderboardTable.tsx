@@ -38,15 +38,15 @@ const LeaderboardTable = ({ players, playersData, searchQuery, updatedPlayer }: 
   return (
     <>
       <div className="max-w-4xl mx-auto px-4 my-8 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-        <Card className="overflow-hidden shadow-2xl border-2 border-primary/10">
+        <Card className="overflow-hidden shadow-xl border-2 border-primary/20 glass-effect">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="bg-gradient-primary text-primary-foreground">
-                  <th className="py-5 px-6 text-left font-bold text-base">Player</th>
-                  <th className="py-5 px-6 text-left font-bold text-base">Score</th>
-                  <th className="py-5 px-6 text-left font-bold text-base">Rank</th>
-                  <th className="py-5 px-6 text-left font-bold text-base">Performance</th>
+                  <th className="py-6 px-6 text-left font-bold text-base font-display">Player</th>
+                  <th className="py-6 px-6 text-left font-bold text-base font-display">Score</th>
+                  <th className="py-6 px-6 text-left font-bold text-base font-display">Rank</th>
+                  <th className="py-6 px-6 text-left font-bold text-base font-display">Performance</th>
                 </tr>
               </thead>
               <tbody>
@@ -54,7 +54,7 @@ const LeaderboardTable = ({ players, playersData, searchQuery, updatedPlayer }: 
                   filteredPlayers.map((player, index) => (
                     <tr
                       key={player.name}
-                      className={`border-b border-border transition-all duration-800 hover:bg-accent/50 hover:scale-[1.01] ${
+                      className={`border-b border-border transition-all duration-300 hover:bg-accent/70 hover:scale-[1.01] hover:shadow-md ${
                         highlightedPlayer === player.name ? "bg-highlight animate-pulse-glow" : ""
                       }`}
                       style={{ animationDelay: `${index * 0.05}s` }}
@@ -62,12 +62,12 @@ const LeaderboardTable = ({ players, playersData, searchQuery, updatedPlayer }: 
                       <td className="py-5 px-6 font-semibold text-base">{player.name}</td>
                       <td className="py-5 px-6 font-medium text-base">
                         <span className="inline-flex items-center gap-1">
-                          {player.score}
+                          <span className="font-display font-bold text-primary">{player.score}</span>
                           <span className="text-xs text-muted-foreground">pts</span>
                         </span>
                       </td>
                       <td className="py-5 px-6">
-                        <span className={`inline-flex items-center justify-center min-w-10 h-10 px-3 rounded-lg font-bold text-sm transition-all ${getRankBadgeClass(player.rank)}`}>
+                        <span className={`inline-flex items-center justify-center min-w-10 h-10 px-3 rounded-xl font-bold text-sm transition-all shadow-sm ${getRankBadgeClass(player.rank)}`}>
                           #{player.rank}
                         </span>
                       </td>
@@ -76,7 +76,7 @@ const LeaderboardTable = ({ players, playersData, searchQuery, updatedPlayer }: 
                           size="sm"
                           variant="outline"
                           onClick={() => setSelectedPlayer(player.name)}
-                          className="gap-2"
+                          className="gap-2 hover:bg-primary hover:text-primary-foreground transition-all shadow-sm"
                         >
                           <TrendingUp className="w-4 h-4" />
                           View
