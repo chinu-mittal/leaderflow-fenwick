@@ -47,30 +47,23 @@ const Index = () => {
   );
 
   const getLeaderboard = useCallback((): Player[] => {
-    const total = tree.query(MAX_SCORE);
-    
     return Object.entries(players)
       .map(([name, data]) => ({
         name,
         score: data.score,
         timestamp: data.timestamp,
-        rank: total - tree.query(data.score) + 1,
+        rank: 0,
       }))
       .sort((a, b) => {
         // Sort by score descending, then by timestamp ascending (earlier = higher rank)
         if (b.score !== a.score) return b.score - a.score;
         return a.timestamp - b.timestamp;
       })
-      .map((player, index, arr) => {
-        // Recalculate rank considering ties and timestamps
-        if (index === 0) return { ...player, rank: 1 };
-        const prevPlayer = arr[index - 1];
-        if (player.score === prevPlayer.score) {
-          return { ...player, rank: prevPlayer.rank };
-        }
-        return { ...player, rank: prevPlayer.rank + 1 };
-      });
-  }, [players, tree]);
+      .map((player, index) => ({
+        ...player,
+        rank: index + 1, // Assign rank based on sorted position
+      }));
+  }, [players]);
 
   const leaderboard = getLeaderboard();
 
