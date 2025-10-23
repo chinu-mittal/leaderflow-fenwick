@@ -1,15 +1,20 @@
-import { Player } from "@/types/player";
+import { Player, PlayerData } from "@/types/player";
 import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { TrendingUp } from "lucide-react";
+import PlayerPerformanceChart from "./PlayerPerformanceChart";
 
 interface LeaderboardTableProps {
   players: Player[];
+  playersData: PlayerData;
   searchQuery: string;
   updatedPlayer: string | null;
 }
 
-const LeaderboardTable = ({ players, searchQuery, updatedPlayer }: LeaderboardTableProps) => {
+const LeaderboardTable = ({ players, playersData, searchQuery, updatedPlayer }: LeaderboardTableProps) => {
   const [highlightedPlayer, setHighlightedPlayer] = useState<string | null>(null);
+  const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
 
   useEffect(() => {
     if (updatedPlayer) {
@@ -31,56 +36,78 @@ const LeaderboardTable = ({ players, searchQuery, updatedPlayer }: LeaderboardTa
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 my-8 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-      <Card className="overflow-hidden shadow-2xl border-2 border-primary/10">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gradient-primary text-primary-foreground">
-                <th className="py-5 px-6 text-left font-bold text-base">Player</th>
-                <th className="py-5 px-6 text-left font-bold text-base">Score</th>
-                <th className="py-5 px-6 text-left font-bold text-base">Rank</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredPlayers.length > 0 ? (
-                filteredPlayers.map((player, index) => (
-                  <tr
-                    key={player.name}
-                    className={`border-b border-border transition-all duration-800 hover:bg-accent/50 hover:scale-[1.01] ${
-                      highlightedPlayer === player.name ? "bg-highlight animate-pulse-glow" : ""
-                    }`}
-                    style={{ animationDelay: `${index * 0.05}s` }}
-                  >
-                    <td className="py-5 px-6 font-semibold text-base">{player.name}</td>
-                    <td className="py-5 px-6 font-medium text-base">
-                      <span className="inline-flex items-center gap-1">
-                        {player.score}
-                        <span className="text-xs text-muted-foreground">pts</span>
-                      </span>
-                    </td>
-                    <td className="py-5 px-6">
-                      <span className={`inline-flex items-center justify-center min-w-10 h-10 px-3 rounded-lg font-bold text-sm transition-all ${getRankBadgeClass(player.rank)}`}>
-                        #{player.rank}
-                      </span>
+    <>
+      <div className="max-w-4xl mx-auto px-4 my-8 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+        <Card className="overflow-hidden shadow-2xl border-2 border-primary/10">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gradient-primary text-primary-foreground">
+                  <th className="py-5 px-6 text-left font-bold text-base">Player</th>
+                  <th className="py-5 px-6 text-left font-bold text-base">Score</th>
+                  <th className="py-5 px-6 text-left font-bold text-base">Rank</th>
+                  <th className="py-5 px-6 text-left font-bold text-base">Performance</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredPlayers.length > 0 ? (
+                  filteredPlayers.map((player, index) => (
+                    <tr
+                      key={player.name}
+                      className={`border-b border-border transition-all duration-800 hover:bg-accent/50 hover:scale-[1.01] ${
+                        highlightedPlayer === player.name ? "bg-highlight animate-pulse-glow" : ""
+                      }`}
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                    >
+                      <td className="py-5 px-6 font-semibold text-base">{player.name}</td>
+                      <td className="py-5 px-6 font-medium text-base">
+                        <span className="inline-flex items-center gap-1">
+                          {player.score}
+                          <span className="text-xs text-muted-foreground">pts</span>
+                        </span>
+                      </td>
+                      <td className="py-5 px-6">
+                        <span className={`inline-flex items-center justify-center min-w-10 h-10 px-3 rounded-lg font-bold text-sm transition-all ${getRankBadgeClass(player.rank)}`}>
+                          #{player.rank}
+                        </span>
+                      </td>
+                      <td className="py-5 px-6">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setSelectedPlayer(player.name)}
+                          className="gap-2"
+                        >
+                          <TrendingUp className="w-4 h-4" />
+                          View
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={4} className="py-12 px-6 text-center text-muted-foreground">
+                      <div className="flex flex-col items-center gap-2">
+                        <span className="text-4xl opacity-50">🔍</span>
+                        <span>No players found</span>
+                      </div>
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={3} className="py-12 px-6 text-center text-muted-foreground">
-                    <div className="flex flex-col items-center gap-2">
-                      <span className="text-4xl opacity-50">🔍</span>
-                      <span>No players found</span>
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </Card>
-    </div>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </div>
+
+      {selectedPlayer && playersData[selectedPlayer] && (
+        <PlayerPerformanceChart
+          playerName={selectedPlayer}
+          history={playersData[selectedPlayer].history}
+          onClose={() => setSelectedPlayer(null)}
+        />
+      )}
+    </>
   );
 };
 

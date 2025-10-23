@@ -7,6 +7,7 @@ import AddPlayerForm from "@/components/AddPlayerForm";
 import SearchBar from "@/components/SearchBar";
 import LeaderboardTable from "@/components/LeaderboardTable";
 import ScoreChart from "@/components/ScoreChart";
+import TopThreePodium from "@/components/TopThreePodium";
 
 const MAX_SCORE = 100;
 
@@ -18,16 +19,23 @@ const Index = () => {
 
   const updateScore = useCallback(
     (name: string, newScore: number) => {
+      const timestamp = Date.now();
+      
       setPlayers((prev) => {
         const updated = { ...prev };
         
         // Remove old score from tree if player exists
         if (updated[name]) {
-          tree.update(updated[name], -1);
+          tree.update(updated[name].score, -1);
         }
         
         // Add new score
-        updated[name] = newScore;
+        const history = updated[name]?.history || [];
+        updated[name] = {
+          score: newScore,
+          timestamp,
+          history: [...history, { score: newScore, timestamp }],
+        };
         tree.update(newScore, 1);
         
         return updated;
@@ -42,12 +50,26 @@ const Index = () => {
     const total = tree.query(MAX_SCORE);
     
     return Object.entries(players)
-      .map(([name, score]) => ({
+      .map(([name, data]) => ({
         name,
-        score,
-        rank: total - tree.query(score) + 1,
+        score: data.score,
+        timestamp: data.timestamp,
+        rank: total - tree.query(data.score) + 1,
       }))
-      .sort((a, b) => b.score - a.score);
+      .sort((a, b) => {
+        // Sort by score descending, then by timestamp ascending (earlier = higher rank)
+        if (b.score !== a.score) return b.score - a.score;
+        return a.timestamp - b.timestamp;
+      })
+      .map((player, index, arr) => {
+        // Recalculate rank considering ties and timestamps
+        if (index === 0) return { ...player, rank: 1 };
+        const prevPlayer = arr[index - 1];
+        if (player.score === prevPlayer.score) {
+          return { ...player, rank: prevPlayer.rank };
+        }
+        return { ...player, rank: prevPlayer.rank + 1 };
+      });
   }, [players, tree]);
 
   const leaderboard = getLeaderboard();
@@ -57,9 +79,11 @@ const Index = () => {
       <LeaderboardHeader />
       <ActionButtons onUpdateScore={updateScore} />
       <AddPlayerForm onAddPlayer={updateScore} />
+      {leaderboard.length > 0 && <TopThreePodium players={leaderboard} />}
       <SearchBar value={searchQuery} onChange={setSearchQuery} />
       <LeaderboardTable 
-        players={leaderboard} 
+        players={leaderboard}
+        playersData={players}
         searchQuery={searchQuery}
         updatedPlayer={updatedPlayer}
       />
